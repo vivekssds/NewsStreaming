@@ -1,0 +1,95 @@
+{
+  "job_id": 777415322278265,
+  "settings": {
+    "name": "NewsStreaming-Cassandra",
+    "email_notifications": {
+      "on_success": [
+        "vsaini@spglobal.com"
+      ],
+      "on_failure": [
+        "vsaini@spglobal.com"
+      ],
+      "no_alert_for_skipped_runs": false
+    },
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "News-Streaming",
+        "spark_jar_task": {
+          "jar_uri": "",
+          "main_class_name": "org.news.Application",
+          "parameters": [
+            "--applicationDisplayName",
+            "News-Streaming",
+            "--streamSource",
+            "KAFKA",
+            "--streamSink",
+            "CASSANDRA"
+          ],
+          "run_as_repl": true
+        },
+        "libraries": [
+          {
+            "jar": "dbfs:/sme/lib/scopt_2.12-4.0.0.jar"
+          },
+          {
+            "jar": "dbfs:/sme/lib/spark-sql-kafka-0-10_2.12-3.0.1.jar"
+          },
+          {
+            "jar": "dbfs:/FileStore/jars/0d41c9b4_0470_41db_b39e_9ab8f6288c4d-NewsStreaming_1_0-45d76.jar"
+          }
+        ],
+        "job_cluster_key": "SME-Omni_cluster",
+        "timeout_seconds": 0,
+        "email_notifications": {}
+      }
+    ],
+    "job_clusters": [
+      {
+        "job_cluster_key": "SME-Omni_cluster",
+        "new_cluster": {
+          "cluster_name": "",
+          "spark_version": "7.3.x-scala2.12",
+          "spark_conf": {
+            "spark.hadoop.fs.s3a.acl.default": "BucketOwnerFullControl",
+            "spark.hadoop.fs.s3a.canned.acl": "BucketOwnerFullControl"
+          },
+          "aws_attributes": {
+            "zone_id": "us-east-1a",
+            "first_on_demand": 1,
+            "availability": "SPOT_WITH_FALLBACK",
+            "instance_profile_arn": "arn:aws:iam::190101517450:instance-profile/Databricks-E2-DEV-SME-Role",
+            "spot_bid_price_percent": 100,
+            "ebs_volume_count": 0
+          },
+          "node_type_id": "i3.xlarge",
+          "custom_tags": {
+            "BU": "MI",
+            "Environment": "DEV",
+            "AppID": "ED1AF064-1BE9-D810-2FAB-31901A4BCBF5",
+            "MaintenanceWindow": "Sun-04:00-UTC",
+            "Owner": "DatabricksSupport@spglobal.com"
+          },
+          "spark_env_vars": {
+            "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+          },
+          "enable_elastic_disk": false,
+          "init_scripts": [
+            {
+              "dbfs": {
+                "destination": "dbfs:/sme/scripts/smeEnvDB.sh"
+              }
+            }
+          ],
+          "num_workers": 8
+        }
+      }
+    ],
+    "format": "MULTI_TASK"
+  },
+  "created_time": 1657963841178,
+  "creator_user_name": "vsaini@spglobal.com",
+  "run_as_user_name": "vsaini@spglobal.com",
+  "run_as_owner": true
+}
